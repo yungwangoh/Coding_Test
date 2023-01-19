@@ -6,23 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 import java.util.Queue;
-
-class Pair {
-    Integer x, y;
-
-    public Pair(Integer x, Integer y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    Integer first() {
-        return x;
-    }
-
-    Integer second() {
-        return y;
-    }
-}
 public class A {
     static int[][] arr = new int[101][1001];
     static int[] dx = {-1, 0, 1, 0};
@@ -51,8 +34,8 @@ public class A {
         queue.add(new Pair(0, 0));
         while (queue.size() > 0) {
             Pair p = queue.poll();
-            int x = p.x;
-            int y = p.y;
+            int x = p.first();
+            int y = p.second();
 
             for(int i = 0; i < 4; i++) {
                 int nx = x + dx[i];
