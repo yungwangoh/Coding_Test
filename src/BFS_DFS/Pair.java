@@ -8,11 +8,11 @@ public class Pair {
         this.y = y;
     }
 
-    Integer first() {
+    public Integer first() {
         return x;
     }
 
-    Integer second() {
+    public Integer second() {
         return y;
     }
 }
