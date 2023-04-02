@@ -1,8 +1,12 @@
 package 완전탐색_백트래킹;
 
+import BFS_DFS.P;
+import BFS_DFS.Pair;
 import BFS_DFS.S;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class C {
@@ -11,6 +15,8 @@ public class C {
     static int[] dy = {-1, 0, 1 ,0};
     static boolean[][] visit;
     static int[][] arr;
+    static List<Pair> list = new ArrayList<>();
+    static int sum = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,7 +28,6 @@ public class C {
         int R = Integer.parseInt(st.nextToken());
 
         arr = new int[N][N];
-        visit = new boolean[N][N];
 
         for(int i = 0; i < N; i++) {
             StringTokenizer st1 = new StringTokenizer(br.readLine());
@@ -35,41 +40,52 @@ public class C {
         int day = 0;
         while (true) {
 
-            search(N, L, R);
-            if(!check(N)) break;
-        }
-    }
+            visit = new boolean[N][N];
+            boolean flag = false;
 
-    static void search(int N, int L, int R) {
+            for(int i = 0; i < N; i++) {
+                for(int j = 0; j < N; j++) {
+                    if(!visit[i][j]) {
 
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-
-                for(int k = 0; k < 4; k++) {
-                    int ny = i + dy[i];
-                    int nx = j + dx[i];
-
-                    if(ny < 0 || nx < 0 || nx >= N || ny >= N) continue;
-
-                    if(arr[ny][nx] >= L && arr[ny][nx] <= R) visit[ny][nx] = true;
-                    else visit[ny][nx] = false;
+                        list.clear();
+                        visit[i][j] = true;
+                        sum = arr[i][j];
+                        list.add(new Pair(i, j));
+                        dfs(i, j, N, L, R);
+                        if(list.size() == 1) continue;
+                        for(var a : list) {
+                            arr[a.first()][a.second()] = sum / (list.size());
+                            flag = true;
+                        }
+                    }
                 }
             }
+
+            if(!flag) break;
+            day++;
         }
+
+        bw.write(String.valueOf(day));
+        bw.flush();
+        bw.close();
     }
-    static boolean check(int N) {
+    static void dfs(int y, int x, int N, int L, int R) {
 
-        int ch = arr[0][0];
-        boolean flag = false;
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
 
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-                if(ch != arr[i][j]) {
-                    flag = true;
-                }
+            if(nx < 0 || ny < 0 || nx >= N || ny >= N || visit[ny][nx]) continue;
+
+            int abs = Math.abs(arr[y][x] - arr[ny][nx]);
+
+            if(abs >= L && abs <= R) {
+
+                visit[ny][nx] = true;
+                list.add(new Pair(ny, nx));
+                sum += arr[ny][nx];
+                dfs(ny, nx, N, L, R);
             }
         }
-
-        return flag;
     }
 }
