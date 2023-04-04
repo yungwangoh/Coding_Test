@@ -13,6 +13,7 @@ public class D {
     static int[] dy = {-1, 0, 1, 0};
     static char[][] arr;
     static int[][] visit;
+    static int[][] humanVisit;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,23 +25,26 @@ public class D {
 
         arr = new char[N][M];
         visit = new int[N][M];
+        humanVisit = new int[N][M];
 
-        Pair pair = null;
+        Pair p = null;
+        Pair p1 = null;
         for(int i = 0; i < N; i++) {
             String s = br.readLine();
 
             for(int j = 0; j < M; j++) {
                 arr[i][j] = s.charAt(j);
 
-                if(arr[i][j] == 'J') pair = new Pair(i, j);
+                if(arr[i][j] == 'F') p = new Pair(i, j);
+                if(arr[i][j] == 'J') p1 = new Pair(i, j);
             }
         }
 
-        int var = bfs(pair.first(), pair.second(), N, M);
+        int var = bfs(p.first(), p.second(), p1.first(), p1.second(), N, M);
 
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < M; j++) {
-                System.out.print(visit[i][j] + " ");
+                System.out.print(humanVisit[i][j] + " ");
             }
             System.out.println();
         }
@@ -50,7 +54,7 @@ public class D {
         bw.flush();
         bw.close();
     }
-    static int bfs(int y, int x, int N, int M) {
+    static int bfs(int y, int x, int y1, int x1, int N, int M) {
         Queue<Pair> queue = new LinkedList<>();
 
         queue.add(new Pair(y, x));
@@ -72,6 +76,27 @@ public class D {
             }
         }
 
-        return visit[y][x];
+        queue.add(new Pair(y1, x1));
+        while (!queue.isEmpty()) {
+            Pair p = queue.poll();
+            y1 = p.first();
+            x1 = p.second();
+
+            for(int i = 0; i < 4; i++) {
+                int nx = x1 + dx[i];
+                int ny = y1 + dy[i];
+
+                if(nx < 0 || ny < 0 || nx >= M || ny >= N || arr[ny][nx] == '#' || arr[ny][nx] =='J'
+                        || arr[ny][nx] == 'F' || humanVisit[ny][nx] > 0) continue;
+
+                queue.add(new Pair(ny,nx));
+
+                if(humanVisit[ny][nx] < visit[y1][x1]) {
+                    humanVisit[ny][nx] = humanVisit[y1][x1] + 1;
+                }
+            }
+        }
+
+        return humanVisit[y1][x1];
     }
 }
