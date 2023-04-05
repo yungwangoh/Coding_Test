@@ -10,8 +10,8 @@ import java.util.StringTokenizer;
 
 public class B {
 
-    static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {-1, 0, 1, 0};
+    static int[] dx = {1, 0, -1, 0};
+    static int[] dy = {0, -1, 0, 1};
     static char[][] arr;
     static int[][] visit;
 

@@ -4,15 +4,15 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class H {
 
-    static int[] arr = new int[100001];
-    static int[] visit = new int[100001];
-    static int[] tracking = new int[100001];
+    static int ret = 0;
+    static int[] arr = new int[100004];
+    static int[] visit = new int[100004];
+    static int[] check = new int[100004];
+    static List<Integer> tracking = new ArrayList<>();
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,7 +22,18 @@ public class H {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        bfs(N, M);
+        int bfs = bfs(N, M);
+        bw.write(bfs + "\n");
+
+        for(int i = M; i != N; i = check[i]) tracking.add(i);
+        tracking.add(N);
+
+        Collections.reverse(tracking);
+        for(Integer i : tracking) bw.write(i + " ");
+        bw.write("\n");
+
+        bw.flush();
+        bw.close();
     }
     static int bfs(int N, int M) {
         Queue<Integer> queue = new LinkedList<>();
@@ -32,15 +43,23 @@ public class H {
         while (!queue.isEmpty()) {
             Integer num = queue.poll();
 
-            for(var a : new int[]{num - 1, num + 1, num * 2}) {
+            if(num == M) {
+                ret = visit[M];
+                break;
+            }
 
-                if(num < 0 || num >= 100000 || visit[a] > 0) continue;
+            for(var a : new int[]{num + 1, num - 1, num * 2}) {
 
-                queue.add(a);
-                visit[a] = visit[N] + 1;
+                if(a >= 0 && a <= 100000) {
+                    if(visit[a] == 0) {
+                        queue.add(a);
+                        check[a] = num;
+                        visit[a] = visit[num] + 1;
+                    }
+                }
             }
         }
 
-        return visit[M];
+        return ret;
     }
 }
