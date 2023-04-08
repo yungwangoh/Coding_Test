@@ -3,18 +3,17 @@ package 완전탐색_백트래킹;
 import BFS_DFS.Pair;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class B {
 
+    static int max = Integer.MIN_VALUE;
     static int[] dx = {1, 0, -1, 0};
     static int[] dy = {0, -1, 0, 1};
     static char[][] arr;
     static int[][] visit;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -24,45 +23,50 @@ public class B {
         int M = Integer.parseInt(st.nextToken());
 
         arr = new char[N][M];
-        visit = new int[N][M];
 
         for(int i = 0; i < N; i++) {
             String s = br.readLine();
 
-            for(int j =0; j < M; j++) {
+            for(int j = 0; j < M; j++) {
                 arr[i][j] = s.charAt(j);
             }
         }
 
-        int max = -9999;
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < M; j++) {
                 if(arr[i][j] == 'L') {
-
-                    for(int k = 0; k < N; k++) Arrays.fill(visit[k], 0);
-
+                    visit = new int[N][M];
                     max = Math.max(bfs(i, j, N, M), max);
                 }
             }
         }
 
-        bw.write(String.valueOf(max - 1));
+        bw.write((max - 1)+ "\n");
+
         bw.flush();
         bw.close();
+    }
+    static void test(int N, int M) {
+
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+                System.out.print(visit[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
     static int bfs(int y, int x, int N, int M) {
         Queue<Pair> queue = new LinkedList<>();
 
         visit[y][x] = 1;
 
-        queue.add(new Pair(y ,x));
+        queue.add(new Pair(y, x));
 
         while (!queue.isEmpty()) {
-            Pair pair = queue.peek();
-            y = pair.first();
-            x = pair.second();
-
-            queue.poll();
+            Pair p = queue.poll();
+            y = p.first();
+            x = p.second();
 
             for(int i = 0; i < 4; i++) {
                 int nx = x + dx[i];
@@ -76,5 +80,5 @@ public class B {
         }
 
         return visit[y][x];
-     }
+    }
 }
