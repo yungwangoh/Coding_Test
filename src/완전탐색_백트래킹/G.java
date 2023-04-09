@@ -6,9 +6,10 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class G {
-    static int[] visit;
-    static int[] visited;
 
+    static int[] arr;
+    static int[] visit;
+    static int[] tracking;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -17,23 +18,23 @@ public class G {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        visit = new int[100001];
-        visited = new int[100001];
+        arr = new int[100004];
+        visit = new int[100004];
+        tracking = new int[100004];
 
-        visited[N] = 1;
+        tracking[N] = 1;
         int bfs = bfs(N, M);
 
         if(N == M) {
-            bw.write("0\n1");
-        }else {
+            bw.write("0\n1\n");
+        } else {
             bw.write(bfs + "\n");
-            bw.write(visited[M] + "\n");
+            bw.write(tracking[M] + "\n");
         }
 
         bw.flush();
         bw.close();
     }
-
     static int bfs(int N, int M) {
         Queue<Integer> queue = new LinkedList<>();
 
@@ -45,12 +46,12 @@ public class G {
             for(var a : new int[]{N - 1, N + 1, N * 2}) {
 
                 if(a >= 0 && a <= 100000) {
-                    if(visit[a] == 0) {
+                    if (visit[a] == 0) {
                         queue.add(a);
                         visit[a] = visit[N] + 1;
-                        visited[a] += visited[N];
-                    } else if(visit[a] == visit[N] + 1) {
-                        visited[a] += visited[N];
+                        tracking[a] += tracking[N];
+                    } else if (visit[a] == visit[N] + 1) {
+                        tracking[a] += tracking[N];
                     }
                 }
             }
