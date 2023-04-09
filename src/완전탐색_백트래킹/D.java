@@ -3,19 +3,17 @@ package 완전탐색_백트래킹;
 import BFS_DFS.Pair;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class D {
 
     static int ret = 0;
-    static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {-1, 0, 1, 0};
+    static int[] dx = {1, 0, -1, 0};
+    static int[] dy = {0, -1, 0, 1};
     static char[][] arr;
-    static int[][] fireVisit;
-    static int[][] humanVisit;
+    static int[][] human;
+    static int[][] fire;
+    static List<Pair> h = new ArrayList<>();
     static Queue<Pair> queue = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
@@ -25,83 +23,82 @@ public class D {
 
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        Pair p = null;
 
         arr = new char[N][M];
-        fireVisit = new int[N][M];
-        humanVisit = new int[N][M];
+        human = new int[N][M];
+        fire = new int[N][M];
 
         for(int i = 0; i < N; i++) {
-            Arrays.fill(fireVisit[i], Integer.MAX_VALUE);
+            Arrays.fill(fire[i], Integer.MAX_VALUE);
         }
 
         for(int i = 0; i < N; i++) {
-
             String s = br.readLine();
+
             for(int j = 0; j < M; j++) {
                 arr[i][j] = s.charAt(j);
 
-                if(arr[i][j] == 'F') {
-                    fireVisit[i][j] = 1;
-                    queue.add(new Pair(i, j));
+                if(arr[i][j] == 'J'){
+                    h.add(new Pair(i, j));
                 }
-                if (arr[i][j] == 'J') {
-                    p = new Pair(i, j);
+
+                if(arr[i][j] == 'F') {
+                    fire[i][j] = 1;
+                    queue.add(new Pair(i, j));
                 }
             }
         }
 
-        int bfs = bfs(p.first(), p.second(), N, M);
+        int bfs = bfs(h.get(0).first(), h.get(0).second(), N, M);
 
         if(bfs != 0) {
             bw.write(bfs + "\n");
         } else {
             bw.write("IMPOSSIBLE\n");
         }
-
         bw.flush();
         bw.close();
     }
-    static int bfs(int y1, int x1, int N, int M) {
+    static int bfs(int hy, int hx, int N, int M) {
 
         while (!queue.isEmpty()) {
             Pair p = queue.poll();
-            int y = p.first();
-            int x = p.second();
+            int fy = p.first();
+            int fx = p.second();
 
             for(int i = 0; i < 4; i++) {
-                int ny = y + dy[i];
-                int nx = x + dx[i];
+                int nx = fx + dx[i];
+                int ny = fy + dy[i];
 
-                if(ny < 0 || nx < 0 || nx >= M || ny >= N || arr[ny][nx] == '#') continue;
-                if(fireVisit[ny][nx] != Integer.MAX_VALUE) continue;
+                if(nx < 0 || ny < 0 || nx >= M || ny >= N || arr[ny][nx] == '#') continue;
+                if(fire[ny][nx] != Integer.MAX_VALUE) continue;
 
+                fire[ny][nx] = fire[fy][fx] + 1;
                 queue.add(new Pair(ny, nx));
-                fireVisit[ny][nx] = fireVisit[y][x] + 1;
             }
         }
 
-        humanVisit[y1][x1] = 1;
-        queue.add(new Pair(y1, x1));
+        human[hy][hx] = 1;
+        queue.add(new Pair(hy, hx));
 
         while (!queue.isEmpty()) {
             Pair p = queue.poll();
-            y1 = p.first();
-            x1 = p.second();
+            hy = p.first();
+            hx = p.second();
 
-            if(y1 == 0 || x1 == 0 || x1 == M - 1 || y1 == N - 1) {
-                ret = humanVisit[y1][x1];
+            if(hy == 0 || hx == 0 || hy == N - 1 || hx == M - 1) {
+                ret = human[hy][hx];
                 break;
             }
 
             for(int i = 0; i < 4; i++) {
-                int ny = y1 + dy[i];
-                int nx = x1 + dx[i];
+                int nx = hx + dx[i];
+                int ny = hy + dy[i];
 
-                if(ny < 0 || nx < 0 || nx >= M || ny >= N || humanVisit[ny][nx] > 0 || arr[ny][nx] == '#') continue;
-                if(fireVisit[ny][nx] <= humanVisit[y1][x1] + 1) continue;
+                if(nx < 0 || ny < 0 || nx >= M || ny >= N || human[ny][nx] > 0 || arr[ny][nx] == '#') continue;
+                if(fire[ny][nx] <= human[hy][hx] + 1) continue;
 
-                humanVisit[ny][nx] = humanVisit[y1][x1] + 1;
+                human[ny][nx] = human[hy][hx] + 1;
                 queue.add(new Pair(ny, nx));
             }
         }
