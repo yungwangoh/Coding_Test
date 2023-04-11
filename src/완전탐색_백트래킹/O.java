@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 public class O {
-
     static int ret = Integer.MAX_VALUE;
     static boolean[][] visit;
 
@@ -30,13 +29,21 @@ public class O {
 
         dfs(1, 0, N, H);
 
-        bw.write(String.valueOf((ret == Integer.MAX_VALUE) ? -1 : ret));
+        if(ret != Integer.MAX_VALUE) {
+            bw.write(ret + "\n");
+        } else {
+            bw.write("-1\n");
+        }
 
         bw.flush();
         bw.close();
     }
     static void dfs(int here, int cnt, int N, int H) {
-        if(cnt > 3 || cnt >= ret) return;
+
+        if(cnt > 3 || cnt >= ret) {
+            return;
+        }
+
         if(check(N, H)) {
             ret = Math.min(ret, cnt);
             return;
@@ -44,7 +51,7 @@ public class O {
 
         for(int i = here; i <= H; i++) {
             for(int j = 1; j <= N; j++) {
-                if(visit[i][j] || visit[i][j - 1] || visit[i][j + 1]) continue;
+                if(visit[i][j] || visit[i][j + 1] || visit[i][j - 1]) continue;
                 visit[i][j] = true;
                 dfs(i, cnt + 1, N, H);
                 visit[i][j] = false;
@@ -58,11 +65,11 @@ public class O {
 
             for(int j = 1; j <= H; j++) {
                 if(visit[j][start]) start++;
-                else if(visit[j][start - 1]) start--;
+                else if (visit[j][start - 1]) start--;
             }
+
             if(start != i) return false;
         }
-
         return true;
     }
 }

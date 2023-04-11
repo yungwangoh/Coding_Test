@@ -5,12 +5,12 @@ import java.util.StringTokenizer;
 
 public class L {
 
+    static int max = Integer.MIN_VALUE;
     static int[] dx = {1, 0, -1, 0};
     static int[] dy = {0, -1, 0, 1};
     static char[][] arr;
     static int[][] visit;
-    static int MAX = Integer.MIN_VALUE;
-    static boolean[] check = new boolean[26];
+    static boolean[] alpha = new boolean[26];
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -33,26 +33,29 @@ public class L {
 
         visit[0][0] = 1;
         dfs(0, 0, N, M);
-        bw.write(MAX + "\n");
+
+        bw.write(max + "\n");
 
         bw.flush();
         bw.close();
     }
     static void dfs(int y, int x, int N, int M) {
-        MAX = Math.max(MAX, visit[y][x]);
-        check[arr[y][x] - 'A'] = true;
+
+        max = Math.max(max, visit[y][x]);
+        alpha[arr[y][x] - 'A'] = true;
 
         for(int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
 
-            if(nx < 0 || ny < 0 || nx >= M || ny >= N || visit[ny][nx] > 0 || check[arr[ny][nx] - 'A']) continue;
+            if(nx < 0 || ny < 0 || nx >= M || ny >= N || visit[ny][nx] > 0) continue;
+            if(alpha[arr[ny][nx] - 'A']) continue;
 
-            check[arr[ny][nx] - 'A'] = true;
+            alpha[arr[ny][nx] - 'A'] = true;
             visit[ny][nx] = visit[y][x] + 1;
             dfs(ny, nx, N, M);
             visit[ny][nx] = 0;
-            check[arr[ny][nx] - 'A'] = false;
+            alpha[arr[ny][nx] - 'A'] = false;
         }
     }
 }
