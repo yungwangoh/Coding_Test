@@ -16,23 +16,24 @@ public class Q {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        int R = Integer.parseInt(st.nextToken());
+        int C = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
 
-        arr = new char[N][M];
-        visit = new int[N][M];
+        arr = new char[R][C];
+        visit = new int[R][C];
 
-        for(int i = 0; i < N; i++) {
+        for(int i = 0; i < R; i++) {
             String s = br.readLine();
 
-            for(int j = 0; j < M; j++) {
+            for(int j = 0; j < C; j++) {
                 arr[i][j] = s.charAt(j);
             }
         }
 
-        visit[N - 1][0] = 1;
-        dfs(N - 1, 0, N, M, K);
+        visit[R - 1][0] = 1;
+        dfs(R - 1, 0, R, C, K);
+
         bw.write(cnt + "\n");
 
         bw.flush();
@@ -40,7 +41,7 @@ public class Q {
     }
     static void dfs(int y, int x, int N, int M, int K) {
 
-        if((y == 0 && x == M - 1) && visit[0][M - 1] == K) {
+        if(visit[0][M - 1] == K) {
             cnt++;
             return;
         }

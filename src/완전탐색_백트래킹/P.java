@@ -36,10 +36,10 @@ public class P {
         bw.flush();
         bw.close();
     }
-    static void dfs(int N, int count, int sum) {
+    static void dfs(int N, int sum, int cnt) {
 
-        if(count == 3) {
-            min = Math.min(sum, min);
+        if(cnt == 3) {
+            min = Math.min(min, sum);
             return;
         }
 
@@ -47,12 +47,13 @@ public class P {
             for(int j = 0; j < N; j++) {
                 if(check(i, j, N)) continue;
 
-                dfs(N, count + 1, sum + flower(i, j, N));
-                flowerRemove(i, j, N);
+                dfs(N, sum + addFlower(i,j, N), cnt + 1);
+                deleteFlower(i, j, N);
             }
         }
     }
     static boolean check(int y, int x, int N) {
+
         if(visit[y][x]) return true;
 
         for(int i = 0; i < 4; i++) {
@@ -64,10 +65,10 @@ public class P {
 
         return false;
     }
-    static int flower(int y, int x, int N) {
+    static int addFlower(int y, int x, int N) {
 
-        visit[y][x] = true;
         int sum = arr[y][x];
+        visit[y][x] = true;
 
         for(int i = 0; i < 4; i++) {
             int nx = x + dx[i];
@@ -81,7 +82,7 @@ public class P {
 
         return sum;
     }
-    static void flowerRemove(int y, int x, int N) {
+    static void deleteFlower(int y, int x, int N) {
 
         visit[y][x] = false;
 
@@ -89,6 +90,7 @@ public class P {
             int nx = x + dx[i];
             int ny = y + dy[i];
 
+            if(nx < 0 || ny < 0 || nx >= N || ny >= N) continue;
             visit[ny][nx] = false;
         }
     }
