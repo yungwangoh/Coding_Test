@@ -1,36 +1,35 @@
 package 구현;
 
 import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class J {
+
+    static Map<String, Integer> map = new HashMap<>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        String s = br.readLine();
-        int N = Integer.parseInt(s);
+        int N = Integer.parseInt(st.nextToken());
 
         for(int i = 0; i < N; i++) {
             int sum = 1;
-            Map<String, Integer> map = new HashMap<>();
+            map.clear();
+            int M = Integer.parseInt(br.readLine());
 
-            String s1 = br.readLine();
-            int num = Integer.parseInt(s1);
+            for(int j = 0; j < M; j++) {
+                String[] s = br.readLine().split(" ");
 
-            for(int j = 0; j < num; j++) {
-                String s2 = br.readLine();
-                String[] s3 = s2.split(" ");
-
-                if(map.containsKey(s3[1])) {
-                    map.put(s3[1], map.get(s3[1]) + 1);
-                } else {
-                    map.put(s3[1], 1);
-                }
+                if(map.containsKey(s[1]))
+                    map.put(s[1], map.get(s[1]) + 1);
+                else
+                    map.put(s[1], 1);
             }
 
-            for(int tmp : map.values()) {
+            for(var tmp : map.values()) {
                 sum *= (tmp + 1);
             }
 

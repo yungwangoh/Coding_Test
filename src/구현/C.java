@@ -1,43 +1,44 @@
 package 구현;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Scanner;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class C {
 
-    static int[] count = new int[101];
-    static int A, B, C;
-    static int a, b;
-
+    static int[] arr = new int[101];
     public static void main(String[] args) throws IOException {
-        Scanner s = new Scanner(System.in);
-        int sum = 0;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        A = s.nextInt();
-        B = s.nextInt();
-        C = s.nextInt();
+        int A = Integer.parseInt(st.nextToken());
+        int B = Integer.parseInt(st.nextToken());
+        int C = Integer.parseInt(st.nextToken());
 
-        for(int i = 0; i <3; i++) {
-            a = s.nextInt();
-            b = s.nextInt();
+        for(int i = 0; i < 3; i++) {
+            StringTokenizer st1 = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st1.nextToken());
+            int b = Integer.parseInt(st1.nextToken());
 
             for(int j = a; j < b; j++) {
-                count[j]++;
+                arr[j]++;
             }
         }
 
-        for(int i = 0; i < count.length; i++) {
-            if(count[i] == 1) sum += A;
-            else if (count[i] == 2) {
-                sum += B * 2;
-            } else if(count[i] == 3) {
-                sum += C * 3;
+        int sum = 0;
+        for(int i = 1; i < arr.length; i++) {
+            if(arr[i] == 1) {
+                sum += A;
+            } else if(arr[i] == 2) {
+                sum += (B * 2);
+            } else if(arr[i] == 3) {
+                sum += (C * 3);
             }
         }
 
-        System.out.println(sum);
+        bw.write(sum + "\n");
+
+        bw.flush();
+        bw.close();
     }
 }

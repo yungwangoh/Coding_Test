@@ -1,50 +1,33 @@
 package 구현;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class A {
 
+    static int sum = 0;
     static int[] arr = new int[9];
-    static boolean[] visit = new boolean[9];
-    static LinkedList<Integer> list = new LinkedList<>();
-
     public static void main(String[] args) throws IOException {
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-       for(int i = 0; i < 9; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
-       }
-
-       dfs(0, 0);
-
-    }
-    static void solve() {
-        Collections.sort(list);
-
-        for(int i = 0; i < 7; i++) {
-            System.out.println(list.get(i));
-        }
-
-        System.exit(0);
-    }
-    static void dfs(int sum, int cnt) {
-
-        if(cnt == 7 && sum == 100) {
-            solve();
-            return;
-        }
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         for(int i = 0; i < 9; i++) {
-            if(visit[i]) continue;
+            arr[i] = Integer.parseInt(br.readLine());
+            sum += arr[i];
+        }
 
-            visit[i] = true;
-            list.add(arr[i]);
-            dfs(sum + arr[i], cnt + 1);
-            visit[i] = false;
-            list.removeLast();
+        Arrays.sort(arr);
+
+        for(int i = 0; i < 9; i++) {
+            for(int j = i + 1; j < 9; j++) {
+                if(sum - arr[i] - arr[j] == 100) {
+                    for(int k = 0; k < 9; k++) {
+                        if(k == i || k == j) continue;
+
+                        System.out.println(arr[k]);
+                    }
+                    System.exit(0);
+                }
+            }
         }
     }
 }
