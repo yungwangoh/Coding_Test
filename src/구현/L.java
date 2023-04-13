@@ -1,39 +1,45 @@
 package 구현;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class L {
+
+    static int cnt = 0;
+    static int[] arr;
+    static boolean[] visit;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String s = br.readLine();
-        String s1 = br.readLine();
+        int N = Integer.parseInt(br.readLine());
+        int M = Integer.parseInt(br.readLine());
 
-        int N = Integer.parseInt(s);
-        int M = Integer.parseInt(s1);
+        arr = new int[N];
+        visit = new boolean[N];
 
-        int[] arr = new int[N];
-
-        String s2 = br.readLine();
-        String[] s3 = s2.split(" ");
-        for(int i = 0; i < s3.length; i++) arr[i] = Integer.parseInt(s3[i]);
-
-        int count = 0;
-
+        StringTokenizer st1 = new StringTokenizer(br.readLine());
         for(int i = 0; i < N; i++) {
-            for(int j = i + 1; j < N; j++) {
-                if(arr[i] + arr[j] == M) {
-                    count++;
-                }
-            }
+            arr[i] = Integer.parseInt(st1.nextToken());
         }
 
-        bw.write(String.valueOf(count));
+        combi(0, N, 0, 0, M);
+
+        bw.write(cnt + "\n");
 
         bw.flush();
         bw.close();
     }
+    static void combi(int here, int n, int r, int sum, int M) {
+        if(sum == M && r == 2) {
+            cnt++;
+            return;
+        }
 
+        for(int i = here; i < n; i++) {
+            visit[i] = true;
+            combi(i + 1, n, r + 1, sum + arr[i], M);
+            visit[i] = false;
+        }
+    }
 }

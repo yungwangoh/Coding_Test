@@ -1,41 +1,42 @@
 package 구현;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.Stack;
+import java.util.StringTokenizer;
 
 public class M {
-    public static void main(String[] args) throws Exception {
+
+    static int ret = 0;
+    static Stack<Character> stack = new Stack<>();
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        Stack<Character> stack = new Stack<>();
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        String s = br.readLine();
-        int N = Integer.parseInt(s);
+        int N = Integer.parseInt(st.nextToken());
 
-        int cnt = 0;
         for(int i = 0; i < N; i++) {
+            stack.clear();
+            String s = br.readLine();
 
-            String line = br.readLine();
-
-            for(int j = 0; j < line.length(); j++) {
-                if (!stack.empty() && (stack.peek() == line.charAt(j))) {
-                    stack.pop();
+            for(int j = 0; j < s.length(); j++) {
+                if(!stack.empty()) {
+                    if(stack.peek() == s.charAt(j)) {
+                        stack.pop();
+                    } else {
+                        stack.push(s.charAt(j));
+                    }
                 } else {
-                    stack.push(line.charAt(j));
+                    stack.push(s.charAt(j));
                 }
             }
 
             if(stack.empty()) {
-                cnt++;
+                ret++;
             }
-
-            stack.clear();
         }
 
-        bw.write(String.valueOf(cnt));
+        bw.write(ret + "\n");
 
         bw.flush();
         bw.close();

@@ -1,68 +1,73 @@
 package BFS_DFS;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class C {
-
-    static final int[] dx = {0, 1, 0, -1};
-    static final int[] dy = {-1, 0, 1, 0};
+    static int areaMax= Integer.MIN_VALUE;
+    static int max = Integer.MIN_VALUE;
+    static int[] dx = {1, 0, -1, 0};
+    static int[] dy = {0, -1, 0, 1};
     static int[][] arr;
     static boolean[][] visit;
-    static int N;
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int max = 0;
-        int m = 0;
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+
         arr = new int[N][N];
+        visit = new boolean[N][N];
 
         for(int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine()," ");
+            StringTokenizer st1 = new StringTokenizer(br.readLine());
 
             for(int j = 0; j < N; j++) {
-                arr[i][j] = Integer.parseInt(st.nextToken());
+                arr[i][j] = Integer.parseInt(st1.nextToken());
+
                 max = Math.max(max, arr[i][j]);
             }
         }
 
-        for(int n = 0; n < max; n++) {
-
+        for(int i = 1; i <= max; i++) {
+            int ret = 0;
             visit = new boolean[N][N];
-            int cnt = 0;
 
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (arr[i][j] <= n) {
-                        visit[i][j] = true;
-                    }
+            count(i, N);
+
+            for(int j = 0; j < N; j++) {
+                for(int k = 0; k < N; k++) {
+                    if(visit[j][k]) continue;
+
+                    dfs(j, k, N);
+                    ret++;
                 }
             }
 
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (!visit[i][j]) {
-                        dfs(i, j);
-                        cnt++;
-                    }
-                }
-            }
-
-            m = Math.max(m, cnt);
+            areaMax = Math.max(areaMax, ret);
         }
 
-        bw.write(Integer.toString(m));
-
+        if(areaMax == 0) {
+            bw.write("1\n");
+        } else {
+            bw.write(areaMax + "\n");
+        }
         bw.flush();
         bw.close();
     }
-    static void dfs(int y, int x) {
+    static void count(int num, int N) {
+
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < N; j++) {
+                if(arr[i][j] <= num) {
+                    visit[i][j] = true;
+                }
+            }
+        }
+    }
+    static void dfs(int y, int x, int N) {
+
         visit[y][x] = true;
 
         for(int i = 0; i < 4; i++) {
@@ -71,7 +76,8 @@ public class C {
 
             if(nx < 0 || ny < 0 || nx >= N || ny >= N || visit[ny][nx]) continue;
 
-            dfs(ny, nx);
+            visit[ny][nx] = true;
+            dfs(ny, nx, N);
         }
     }
 }
