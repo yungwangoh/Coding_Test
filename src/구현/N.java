@@ -1,6 +1,9 @@
 package 구현;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 public class N {
@@ -13,6 +16,8 @@ public class N {
         int M = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
 
-
+        List<Integer> list = new ArrayList<>();
+    }
+    static void dfs(int N, int M, int K) {
     }
 }
