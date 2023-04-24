@@ -68,54 +68,9 @@ public class A {
             nutrient[i] = new Nutrient(p, f, s, v, total);
         }
 
-        for(int i = 1; i < (1 << N); i++) {
-            int b = 0; int c = 0; int d = 0; int e = 0; int sum = 0;
-            List<Integer> list = new ArrayList<>();
 
-            for(int j = 0; j < N; j++) {
-                if((i & (1 << j)) > 0) {
-                    list.add(j + 1);
-                    b += nutrient[j].getMp();
-                    c += nutrient[j].getMf();
-                    d += nutrient[j].getMs();
-                    e += nutrient[j].getMv();
-                    sum += nutrient[j].getTotal();
-                }
-            }
+    }
+    static void dfs() {
 
-            if(b >= mp && c >= mf && d >= ms && e >= mv) {
-                if(ret >= sum) {
-                    ret = sum;
-                    if(!map.containsKey(ret)) {
-                        map.put(ret, new ArrayList<>());
-                    }
-                    if(map.containsKey(ret)) {
-                        map.get(ret).add(list);
-                    }
-                }
-            }
-        }
-
-        if(ret == Integer.MAX_VALUE) {
-            bw.write("-1\n");
-        } else {
-            map.get(ret).sort((o1, o2) -> {
-                for(int i = 0; i < Math.min(o1.size(), o2.size()); i++) {
-                    if(!o1.get(i).equals(o2.get(i))) {
-                        return o1.get(i) - o2.get(i);
-                    }
-                }
-                return o1.size() - o2.size();
-            });
-
-            bw.write(ret + "\n");
-            for(int a : map.get(ret).get(0)) {
-                bw.write(a + " ");
-            }
-            bw.write("\n");
-        }
-
-        bw.flush();
-        bw.close();
     }
 }

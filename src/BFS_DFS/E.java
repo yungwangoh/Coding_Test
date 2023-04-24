@@ -1,58 +1,27 @@
 package BFS_DFS;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.util.StringTokenizer;
 
 public class E {
 
     static int[][] arr;
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(br.readLine());
-
-        arr = new int[N][N];
+        int N = Integer.parseInt(st.nextToken());
+        arr =new int[N + 1][N + 1];
 
         for(int i = 0; i < N; i++) {
-            String line = br.readLine();
+            StringTokenizer st1 = new StringTokenizer(br.readLine());
 
             for(int j = 0; j < N; j++) {
-                arr[i][j] = line.charAt(j) - '0';
+                arr[i][j] = Integer.parseInt(st1.nextToken());
             }
         }
 
-        System.out.println(go(0, 0, N));
 
-        bw.flush();
-        bw.close();
-    }
-
-    static String go(int y, int x, int N) {
-        StringBuilder tmp = new StringBuilder();
-        int val = arr[y][x];
-
-        if(N == 1) {
-            return Integer.toString(arr[y][x]);
-        }
-
-        for(int i = y; i < y + N; i++) {
-            for(int j = x; j < x + N; j++) {
-                if(arr[i][j] != val) {
-                    tmp.append("(");
-                    tmp.append(go(y, x, N / 2));
-                    tmp.append(go(y, x + N / 2, N / 2));
-                    tmp.append(go(y + N / 2, x, N / 2));
-                    tmp.append(go(y + N / 2, x + N / 2, N / 2));
-                    tmp.append(")");
-                    return tmp.toString();
-                }
-            }
-        }
-        return Integer.toString(arr[y][x]);
     }
 }
