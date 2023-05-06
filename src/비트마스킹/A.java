@@ -68,7 +68,11 @@ public class A {
             nutrient[i] = new Nutrient(p, f, s, v, total);
         }
 
+        for(int i = 0; i < (1 << N); i++) {
+            if((i & (1 << i)) > 0) {
 
+            }
+        }
     }
     static void dfs() {
 
