@@ -1,13 +1,12 @@
 package 그리디;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class L {
 
     static int[][] arr;
+    static boolean[] visit;
     static int min = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws IOException {
@@ -15,6 +14,8 @@ public class L {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int N = Integer.parseInt(br.readLine());
+
+        visit = new boolean[N];
         arr = new int[N][N];
 
         for(int i = 0; i < N; i++) {
@@ -25,40 +26,39 @@ public class L {
             }
         }
 
-        // bit masking solving
-        for(int i = 0; i < (1 << N); i++) {
-            if(Integer.bitCount(i) != N / 2)  continue;
-            List<Integer> start = new ArrayList<>();
-            List<Integer> link = new ArrayList<>();
-
-            for (int j = 0; j < N; j++) {
-                if((i & (1 << j)) > 0) start.add(j);
-                else link.add(j);
-            }
-            System.out.println();
-
-            min = Math.min(min , go(start, link, N));
-        }
-
-        bw.write(min + "\n");
+        go(0, N, 0);
+        bw.write(min / 2 + "\n");
 
         bw.flush();
         bw.close();
     }
-    static int go(List<Integer> start, List<Integer> link, int N) {
+    static void go(int H, int N, int count) {
 
-        int s = 0;
-        int l = 0;
+        if(count == N / 2) {
+            int s = 0;
+            int l = 0;
+            for(int i = 0; i < N; i++) {
+                for(int j = 0; j < N; j++) {
+                    if(i == j) continue;
 
-        for(int i = 0; i < N / 2; i++) {
-            for(int j = 0; j < N / 2; j++) {
-                if(i == j) continue;
-
-                s += arr[start.get(i)][start.get(j)];
-                l += arr[link.get(i)][link.get(j)];
+                    if (visit[i] && visit[j]) {
+                        s += arr[i][j] + arr[j][i];
+                    } else if (!visit[i] && !visit[j]) {
+                        l += arr[i][j] + arr[j][i];
+                    }
+                }
             }
+
+            int abs = Math.abs(s - l);
+            min = Math.min(min, abs);
         }
 
-        return Math.abs(s - l);
+        for(int i = H; i < N; i++) {
+            if(visit[i]) continue;
+
+            visit[i] = true;
+            go(i + 1, N, count + 1);
+            visit[i] = false;
+        }
     }
 }
