@@ -34,7 +34,20 @@ public class G1107 {
 
         min = Math.min(min, abs);
 
-        dfs(10, 0, N, "");
+        //dfs(10, 0, N, "");
+
+        StringBuilder sb;
+        for(int i = 0; i < (1 << M); i++) {
+            sb = new StringBuilder();
+
+            for(int j = 0; j < 6; j++) {
+                if((i & (1 << j)) > 0) {
+
+                    sb.append(j);
+                }
+            }
+            System.out.println(sb);
+        }
 
         System.out.println(min + "\n");
     }
