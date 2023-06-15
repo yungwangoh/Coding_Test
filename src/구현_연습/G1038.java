@@ -8,10 +8,10 @@ public class G1038 {
 
         int N = Integer.parseInt(br.readLine());
 
-        int i = 0;
+        long i = 0;
         int check = 0;
         boolean flag = false;
-        while (i < Integer.MAX_VALUE) {
+        while (i < 9876543210L) {
 
             if(check == N) {
                 flag = true;
